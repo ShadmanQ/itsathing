@@ -99,8 +99,8 @@ function draw() {
 
 		player.update();
 		player.display();
-		camera.x = player.x;
-		camera.y = player.y;
+		camera.position.x = player.x;
+		camera.position.y = player.y;
 
 		// call all methods for enemies
 		// go backwards cuz we might delete
