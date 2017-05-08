@@ -4,7 +4,7 @@ var player;
 var enemies = [];
 
 // control the spawning of enemies
-var enemySpawnInterval = 150;
+var enemySpawnInterval = 250;
 var lastEnemySpawn = 0;
 
 var gameOver = false;
@@ -27,9 +27,6 @@ function setup() {
 	// basically mandatory for mobile sketches
 	pixelDensity(1);
 
-
-	background(frame);
-
 	//createCanvas(windowWidth / 4, windowHeight / 4);
 	createCanvas(windowWidth, windowHeight);
 
@@ -42,7 +39,7 @@ function setup() {
 
 function draw() {
 
-	background(160,200,50);
+	background(frame);
 
 	if(!gameOver) {
 
@@ -55,6 +52,7 @@ function draw() {
 
 		if (player.diameter > 150 && player.diameter < 200){
 			camera.zoom = 2.0;
+			enemySpawnInterval = 150;
 		}
 
 		if (player.diameter > 200 && player.diameter < 250){
@@ -206,18 +204,13 @@ function Enemy (x, y, xSpeed, ySpeed, hue) {
 		// move
 		this.x += xSpeed;
 		this.y += ySpeed;
+		console.log(this.shade);
 
 		// did we touch player?
 		var distToPlayer = dist(this.x, this.y, player.x, player.y);
 		// if so, lose
 		if(distToPlayer < this.diameter/2 + player.diameter/2) {
-			if (this.shade == color(255,0,0)){
 			player.diameter +=10;
-			}
-			if (this.shade == color(0,255,0)){
-			player +=20;
-			}
-			if 
 			this.deleteMe = true;
 		}
 
