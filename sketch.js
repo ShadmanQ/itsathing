@@ -43,9 +43,6 @@ function draw() {
 
 	if(!gameOver) {
 
-		camera.position.x = player.x;
-		camera.position.y = player.y;
-
 		if (player.diameter > 120 && player.diameter < 150 ){
 			camera.zoom = 3.0;
 		}
