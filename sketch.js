@@ -34,14 +34,36 @@ function setup() {
 	createCanvas(windowWidth, windowHeight);
 
 	// create player object
-	player = new Player();
+	player = new Player;
 
-	camera.zoom = 3;
+	camera.zoom = 4;
+
 }
 
 function draw() {
 
+	background(160,200,50);
+
 	if(!gameOver) {
+
+		camera.position.x = player.x;
+		camera.position.y = player.y;
+
+		if (player.diameter > 120 && player.diameter < 150 ){
+			camera.zoom = 3.0;
+		}
+
+		if (player.diameter > 150 && player.diameter < 200){
+			camera.zoom = 2.0;
+		}
+
+		if (player.diameter > 200 && player.diameter < 250){
+			camera.zoom = 1.0;
+		}
+
+		if (player.diameter > 250 && player.diameter < 300){
+			camera.zoom = 0.5;
+		}
 
 
 		// time to spawn a new enemy?
@@ -57,8 +79,9 @@ function draw() {
 				var y = 0;
 				var xSpeed = random(-5,5);
 				var ySpeed = random(1,5);
+				var col = color(0,255,0);
 
-				enemies.push(new Enemy(x,y,xSpeed,ySpeed));
+				enemies.push(new Enemy(x,y,xSpeed,ySpeed,col));
 			}
 
 			if(rando == 1) {
@@ -67,8 +90,9 @@ function draw() {
 				var y = height;
 				var xSpeed = random(-5,5);
 				var ySpeed = random(-1,-5);
+				var col = color(255,0,0);
 
-				enemies.push(new Enemy(x,y,xSpeed,ySpeed));
+				enemies.push(new Enemy(x,y,xSpeed,ySpeed,col));
 			}
 
 			if(rando == 2) {
@@ -77,8 +101,9 @@ function draw() {
 				var y = random(height);
 				var xSpeed = random(1,5);
 				var ySpeed = random(-5,-5);
+				var col = color(0,0,255);
 
-				enemies.push(new Enemy(x,y,xSpeed,ySpeed));
+				enemies.push(new Enemy(x,y,xSpeed,ySpeed,col));
 			}
 
 			if(rando == 3) {
@@ -87,18 +112,15 @@ function draw() {
 				var y = random(height);
 				var xSpeed = random(-1,-5);
 				var ySpeed = random(-5,-5);
+				var col = color(120,120,120);
 
-				enemies.push(new Enemy(x,y,xSpeed,ySpeed));
+				enemies.push(new Enemy(x,y,xSpeed,ySpeed,col));
 			}
 
 			
 		}
 
-		background(frame);
-
-
-		camera.position.x = player.x;
-		camera.position.y = player.y;
+	//	background(frame);
 
 		player.update();
 		player.display();
@@ -152,18 +174,6 @@ function Player () {
 			gameOver = true;
 		}
 
-		if (this.diameter > 120 && this.diameter < 150 ){
-			camera.zoom = 3.5;
-		}
-
-		if (this.diameter > 150 && this.diameter < 200){
-			camera.zoom = 3.0;
-		}
-
-		if (this.diameter > 200 && this.diameter < 250){
-			camera.zoom = 3.0;
-		}
-
 	}
  
 	this.display = function() {
@@ -177,13 +187,15 @@ function Player () {
 
 
 // create a class
-function Enemy (x, y, xSpeed, ySpeed) {
+function Enemy (x, y, xSpeed, ySpeed, hue) {
  
 	// internal variables
 	this.x = x;
 	this.y = y;
 	this.xSpeed = xSpeed;
 	this.ySpeed = ySpeed;
+
+	this.shade = hue;
 
 	this.diameter = 40;
 
@@ -199,7 +211,13 @@ function Enemy (x, y, xSpeed, ySpeed) {
 		var distToPlayer = dist(this.x, this.y, player.x, player.y);
 		// if so, lose
 		if(distToPlayer < this.diameter/2 + player.diameter/2) {
+			if (this.shade == color(255,0,0)){
 			player.diameter +=10;
+			}
+			if (this.shade == color(0,255,0)){
+			player +=20;
+			}
+			if 
 			this.deleteMe = true;
 		}
 
@@ -213,7 +231,7 @@ function Enemy (x, y, xSpeed, ySpeed) {
 	}
  
 	this.display = function() {
-		fill(255,0,0);
+		fill(this.shade);
 		noStroke();
 		ellipse(this.x, this.y, this.diameter, this.diameter);
 	}
