@@ -160,8 +160,6 @@ function Player () {
 
 		this.y += rotationY;
 		this.x += rotationX;
-		camera.position.x = this.x;
-		camera.position.y = this.y;
 
 		// have we touched the sides?
 		if(this.x < 0 || this.x > width) {
@@ -172,6 +170,8 @@ function Player () {
 		}
 
 	}
+
+	this.sprite = createSprite(this.x,this.y,this.diameter,this.diameter);
  
 	this.display = function() {
 		fill(0);
