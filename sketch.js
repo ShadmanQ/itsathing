@@ -158,8 +158,10 @@ function Player () {
 		// accelerationX, accelerationY, accelerationZ
 		// rotationX, rotationY, rotationZ
 
-		this.y += accelerationX;
-		this.x += accelerationY;
+		this.y += rotationY;
+		this.x += rotationX;
+		camera.position.x = this.x;
+		camera.position.y = this.y;
 
 		// have we touched the sides?
 		if(this.x < 0 || this.x > width) {
