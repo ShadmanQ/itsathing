@@ -1,9 +1,9 @@
 // a singular player object
 var player;
-// create array of enemies
-var enemies = [];
+// create array of pellets
+var pellets = [];
 
-// control the spawning of enemies
+// control the spawning of pellets
 var enemySpawnInterval = 250;
 var lastEnemySpawn = 0;
 
@@ -35,11 +35,21 @@ function setup() {
 
 	camera.zoom = 4;
 
+	textSize(30);
+
 }
 
 function draw() {
 
+
+
 	background(frame);
+
+	time = int(millis()/1000);
+
+	if (millis() > timer){
+		gameOver = true;
+	}
 
 	if(!gameOver) {
 
@@ -76,7 +86,7 @@ function draw() {
 				var ySpeed = random(1,5);
 				var col = color(0,255,0);
 
-				enemies.push(new Enemy(x,y,xSpeed,ySpeed,col));
+				pellets.push(new Enemy(x,y,xSpeed,ySpeed,col));
 			}
 
 			if(rando == 1) {
@@ -87,7 +97,7 @@ function draw() {
 				var ySpeed = random(-1,-5);
 				var col = color(255,0,0);
 
-				enemies.push(new Enemy(x,y,xSpeed,ySpeed,col));
+				pellets.push(new Enemy(x,y,xSpeed,ySpeed,col));
 			}
 
 			if(rando == 2) {
@@ -98,7 +108,7 @@ function draw() {
 				var ySpeed = random(-5,-5);
 				var col = color(0,0,255);
 
-				enemies.push(new Enemy(x,y,xSpeed,ySpeed,col));
+				pellets.push(new Enemy(x,y,xSpeed,ySpeed,col));
 			}
 
 			if(rando == 3) {
@@ -109,7 +119,7 @@ function draw() {
 				var ySpeed = random(-5,-5);
 				var col = color(120,120,120);
 
-				enemies.push(new Enemy(x,y,xSpeed,ySpeed,col));
+				pellets.push(new Enemy(x,y,xSpeed,ySpeed,col));
 			}
 
 			
@@ -120,15 +130,18 @@ function draw() {
 		player.update();
 		player.display();
 
-		// call all methods for enemies
+		fill(255);
+		text(time, player.x,player.y);
+
+		// call all methods for pellets
 		// go backwards cuz we might delete
-		for(var i = enemies.length - 1; i >= 0; i--) {
-			enemies[i].update();
-			enemies[i].display();
+		for(var i = pellets.length - 1; i >= 0; i--) {
+			pellets[i].update();
+			pellets[i].display();
 
 			// is it marked for deletion?
-			if(enemies[i].deleteMe) {
-				enemies.splice(i,1);
+			if(pellets[i].deleteMe) {
+				pellets.splice(i,1);
 			}
 		}
 
@@ -137,8 +150,9 @@ function draw() {
 		background(255,0,0);
 		fill(255,255,0);
 		textAlign(CENTER, CENTER);
+		camera.zoom = 1;
 		textSize(50);
-		text("YOU LOSE!", width/2, height/2);
+		text("Nice!, you got the ball\n to " + player.diameter + "px!", width/2, height/2);
 	}
 
 }
@@ -162,13 +176,21 @@ function Player () {
 		this.x += rotationX;
 
 		// have we touched the sides?
-		if(this.x < 0 || this.x > width) {
-			gameOver = true;
-		}
-		if(this.y < 0 || this.y > height) {
-			gameOver = true;
+		if(this.x < 0){
+			this.x = width;
 		}
 
+		if (this.x > width){
+			this.x = 0;
+		}
+
+		if (this.y < 0){
+			this.y = height;
+		}
+
+		if (this.y > height){
+			this.y = 0;
+		}
 	}
 
 	this.sprite = createSprite(this.x,this.y,this.diameter,this.diameter);
@@ -203,7 +225,6 @@ function Enemy (x, y, xSpeed, ySpeed, hue) {
 		// move
 		this.x += xSpeed;
 		this.y += ySpeed;
-		console.log(this.shade);
 
 		// did we touch player?
 		var distToPlayer = dist(this.x, this.y, player.x, player.y);
