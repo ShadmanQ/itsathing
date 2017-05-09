@@ -172,8 +172,8 @@ function Player () {
 		// accelerationX, accelerationY, accelerationZ
 		// rotationX, rotationY, rotationZ
 
-		this.y += rotationY;
-		this.x += rotationX;
+		this.y += rotationY/2;
+		this.x += rotationX/2;
 
 		// have we touched the sides?
 		if(this.x < 0){
